@@ -2,4 +2,3 @@ pyautogen==0.2.29
 openai==1.13.3
 requests==2.32.2
 jsonlines==4.0.0
-zhipuai==2.0.1
