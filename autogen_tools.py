@@ -140,7 +140,7 @@ def get_sub_company_info(
     results = rsp.json()
     # 错误判断
     if rsp.json() == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
-    if len(results) == 1:
+    if type(results) == dict:
         results['上市公司投资金额'] = ch2int(results['上市公司投资金额'])
         return [results]
     else: 
