@@ -180,9 +180,23 @@ def get_sub_company_info_by_company_info(
 )->list[dict]:
     # 通过search_company_name_by_sub_info获得母公司名下所有子公司名称
     company_names = search_company_name_by_sub_info(key=key, value=value)
+    print(len(company_names))
+    import time
+    if len(company_names) > 127:
+        i = 127
+        company_name = []
+        for i in range(127, len(company_names), 127):
+            time.sleep(3)
+            company_name.extend(get_sub_company_info(company_name=company_names[i-127:i]))
+            
+            if len(company_names) < i + 127:
+                time.sleep(3)
+                company_name.extend(get_sub_company_info(company_name=company_names[i:]))
+                
+        return company_name
     # 通过get_sub_company_info获得所有子公司的信息
-    # company_name = [i['公司名称']for i in company_names]
-    return get_sub_company_info(company_name=company_names)
+    else:
+        return get_sub_company_info(company_name=company_names)
 
 def get_legal_document(
     case_num: list[str]) -> list[dict]:
