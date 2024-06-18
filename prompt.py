@@ -10,16 +10,7 @@ SYSTEM_PROMPT = """\
 WRITER_PROMPT="""
 你是一个有用的人工智能助手。 
 当你收到的问题为法律方向的问题，且问题无法通过函数解决时，不用调用函数，根据自己的知识返回答案。
-使用你的编码和语言技能解决任务，你给出的所有代码包括从functions中引用函数必须在代码块里。 
-在以下情况下，建议用户执行python代码(python编码块中)或shell脚本(sh编码块中)。 
-1. 当需要收集信息时，可以使用代码输出所需信息，例如浏览或搜索网页、下载/读取文件、打印网页或文件的内容、获取当前日期/时间、检查操作系统等。在打印出足够的信息，并根据你的语言能力完成任务后，你就可以自己完成任务了。 
-2. 当你需要用代码执行某些任务时，使用代码来执行任务并输出结果。巧妙地完成任务。 
-如果需要，可以一步一步地解决任务。如果没有提供计划，首先解释你的计划。明确哪一步使用代码，哪一步使用你的语言技能。 
-使用代码时，必须在代码块中指定脚本类型。除了执行您建议的代码之外，用户不能提供任何其他反馈或执行任何其他操作。用户不能修改你的代码。所以不要建议不完整的代码，这需要用户修改。不要使用不会被用户执行的代码块。 
-如果你希望用户在执行代码之前将其保存在文件中，可以将代码块中的# filename: <filename>作为第一行。不要在一个响应中包含多个代码块。不要要求用户复制粘贴结果。相反，在相关的时候，使用` print `函数来获取输出。检查用户返回的执行结果。 
-如果结果表明有错误，修复错误并再次输出代码。建议完整的代码，而不是部分代码或代码更改。如果错误无法修复，或者即使在代码成功执行后任务仍未解决，请分析问题，重新审视你的假设，收集所需的额外信息，并考虑使用不同的方法。 
-当你找到答案时，仔细验证答案。如果可能的话，在回复中包含可验证的证据。 
-您可以访问以下用户定义的函数。它们可以通过函数名从名为`functions`的模块中访问。 
+使用你的编码和语言技能解决任务，您只能从名为`functions`的模块中访问以下用户定义的函数。除了以下函数以外你不能使用其他函数。
  
 例如，如果问题是"请问批发业注册资本最高的前3家公司的名称以及他们的注册资本（单位为万元）？"
 你可以返回如下代码块
@@ -51,6 +42,40 @@ print("法人代表" + company_info[0]['法人代表'])
 print("注册地址" + company_info[0]['注册地址'])
 print("电子邮箱" + company_info[0]['电子邮箱'])
 ```
+例如，如果问题是"我想知道北京华清瑞达科技有限公司、博晖生物制药（内蒙古）有限公司、浙江迪安健检医疗管理有限公司分别属于哪几家公司的子公司。"
+你可以返回如下代码块
+```python
+from functions import get_sub_company_info
+result = get_sub_company_info(company_name=['北京华清瑞达科技有限公司', '博晖生物制药（内蒙古）有限公司', '浙江迪安健检医疗管理有限公司'])
+for company_info in result:
+    print(f"公司名称: {company_info['公司名称']}")
+    print(f"关联上市公司股票代码: {company_info['关联上市公司股票代码']}")
+    print(f"关联上市公司股票简称: {company_info['关联上市公司股票简称']}")
+    print(f"关联上市公司全称: {company_info['关联上市公司全称']}")
+    print(f"上市公司关系: {company_info['上市公司关系']}")
+    print(f"上市公司参股比例: {company_info['上市公司参股比例']}")
+    print(f"上市公司投资金额: {company_info['上市公司投资金额']}")
+    print("----------")
+```
+
+例如，如果问题是"大众交通（集团）股份有限公司中，投资超5000万并控股超50%的子公司有多少家？"
+你可以返回如下代码块
+```python
+from functions import get_sub_company_info_by_company_info
+sub_company_info = get_sub_company_info_by_company_info(key="关联上市公司全称", value="大众交通（集团）股份有限公司")
+# 获取符合条件的公司
+qualifying_subcompanies = [
+    sub for sub in sub_company_info
+    if float(sub['上市公司参股比例']) > 50 and float(sub['上市公司投资金额']) > 50000000
+]
+# 打印结果
+print(f"大众交通（集团）股份有限公司中，投资超5000万并控股超50%的子公司有 {len(qualifying_subcompanies)} 家。")
+for sub in qualifying_subcompanies:
+    print(f"子公司名称: {sub['公司名称']}")
+    print(f"投资金额: {sub['上市公司投资金额']}")
+    print(f"控股比例: {sub['上市公司参股比例']}")
+    print("----------")
+```
 
 你可以使用的函数：
 get_company_info(company_name: list[str]) -> list[dict]
@@ -63,8 +88,9 @@ search_company_name_by_info(key: str,value: list[str]) -> list[dict]:
 Args:
 key(str):公司基本信息字段
 value(str):字段的值
+返回：[{"公司名称": str}]
 
-def get_company_register(company_name: list[str]) -> list[dict]
+get_company_register(company_name: list[str]) -> list[dict]
 根据公司名称获得该公司如下注册信息[公司名称,登记状态,统一社会信用代码,注册资本,成立日期,省份,城市,区县,注册号,组织机构代码,参保人数,企业类型,曾用名]
 Args:
 company_name(list[str]):公司名称
@@ -75,16 +101,16 @@ Args:
 key(str):公司注册信息字段
 value(str):字段的值
 
+get_sub_company_info_by_company_info(key: str,value: str) -> list[dict]
+根据母公司信息某个字段是某个值查询母公司旗下所有子公司
+Args:
+key(str):母公司信息某个字段 如关联上市公司全称,关联上市公司股票代码,关联上市公司股票简称
+value(str):母公司信息字段值
+
 get_sub_company_info(company_name: list[str]) -> list[dict]
-根据子公司名称获得该公司母公司信息[关联上市公司股票代码,关联上市公司股票简称,关联上市公司全称,上市公司关系,上市公司参股比例,上市公司投资金额,公司名称]
+根据子公司名称获得该公司与母公司信息[关联上市公司股票代码,关联上市公司股票简称,关联上市公司全称,上市公司关系,上市公司参股比例,上市公司投资金额,公司名称]
 Args:
 company_name(list[str]):子公司名称
-
-search_company_name_by_sub_info(key: str,value: str) -> list[dict]
-根据母公司信息某个字段是某个值查询子公司名称
-Args:
-key(str):母公司信息某个字段
-value(str):母公司信息字段值
 
 get_legal_document( case_num: list[str]) -> list[dict]
 根据案号获得该案如下基本信息[标题,案号,文书类型,原告,被告,原告律师,被告律师,案由,审理法条依据,涉案金额,判决结果,胜诉方,文件名]

@@ -17,6 +17,8 @@ def get_company_info(
     }
 
     rsp = requests.post(url, json=data, headers=headers)
+    # 错误判断
+    if rsp.json() == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
     if len(company_name) == 1:
         return [rsp.json()]
     else: 
@@ -43,7 +45,12 @@ def search_company_name_by_info(
     }
 
     rsp = requests.post(url, json=data, headers=headers)
-    return rsp.json()
+    # 错误判断
+    if rsp.json() == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
+    if len(rsp.json()) == 1:
+        return [rsp.json()]
+    else: 
+        return rsp.json()
 
 def get_company_register(
     company_name: list[str]) -> list[dict]:
@@ -64,6 +71,8 @@ def get_company_register(
     }
 
     rsp = requests.post(url, json=data, headers=headers)
+    # 错误判断
+    if rsp.json() == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
     if len(company_name) == 1:
         return [rsp.json()]
     else: 
@@ -91,12 +100,27 @@ def search_company_name_by_register(
     }
 
     rsp = requests.post(url, json=data, headers=headers)
+    # 错误判断
+    if rsp.json() == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
     return rsp.json()
 
+def ch2int(total):
+    if total is not None:
+        if "亿" in total:
+            total = total.replace('亿', 'e8')
+            total = float(total)
+            return str(total).split('.')[0]
+
+        if "万" in total:
+            total = total.replace('万', 'e4')
+            total = float(total)
+            return str(total).split('.')[0]
+    else:
+        return '0'
 
 def get_sub_company_info(
     company_name: list[str]) -> list[dict]:
-    '''根据子公司名称获得该公司母公司信息
+    '''根据子公司名称获得该公司母公司如下信息
     Args:
     company_name(list[str]):子公司名称
     '''
@@ -113,15 +137,21 @@ def get_sub_company_info(
     }
 
     rsp = requests.post(url, json=data, headers=headers)
-    if len(company_name) == 1:
-        return [rsp.json()]
+    results = rsp.json()
+    # 错误判断
+    if rsp.json() == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
+    if len(results) == 1:
+        results['上市公司投资金额'] = ch2int(results['上市公司投资金额'])
+        return [results]
     else: 
-        return rsp.json()
+        for result in results:
+            result['上市公司投资金额'] = ch2int(result['上市公司投资金额'])
+        return results
 
 
 def search_company_name_by_sub_info(
     key: str,
-    value: str) -> list[dict]:
+    value: str) -> list[str]:
     '''根据母公司信息某个字段是某个值查询子公司名称
         Args:
         key(str):母公司信息某个字段
@@ -138,8 +168,21 @@ def search_company_name_by_sub_info(
         'value': value
     }
     rsp = requests.post(url, json=data, headers=headers)
-    return rsp.json()
+    # 错误判断
+    if rsp.json() == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
+    result = []
+    for rsp in rsp.json(): result.append(rsp['公司名称'])
+    return result
 
+def get_sub_company_info_by_company_info(
+        key:str,
+        value:str
+)->list[dict]:
+    # 通过search_company_name_by_sub_info获得母公司名下所有子公司名称
+    company_names = search_company_name_by_sub_info(key=key, value=value)
+    # 通过get_sub_company_info获得所有子公司的信息
+    
+    return get_sub_company_info(company_name=company_names)
 
 def get_legal_document(
     case_num: list[str]) -> list[dict]:
@@ -160,6 +203,8 @@ def get_legal_document(
     }
 
     rsp = requests.post(url, json=data, headers=headers)
+    # 错误判断
+    if rsp.json() == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
     if len(case_num) == 1:
         return [rsp.json()]
     else:
@@ -186,4 +231,6 @@ def search_case_num_by_legal_document(
     }
 
     rsp = requests.post(url, json=data, headers=headers)
+    # 错误判断
+    if rsp.json() == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
     return rsp.json()
