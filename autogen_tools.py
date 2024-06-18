@@ -181,7 +181,7 @@ def get_sub_company_info_by_company_info(
     # 通过search_company_name_by_sub_info获得母公司名下所有子公司名称
     company_names = search_company_name_by_sub_info(key=key, value=value)
     # 通过get_sub_company_info获得所有子公司的信息
-    
+    # company_name = [i['公司名称']for i in company_names]
     return get_sub_company_info(company_name=company_names)
 
 def get_legal_document(
@@ -197,19 +197,27 @@ def get_legal_document(
         'Content-Type': 'application/json',
         'Authorization': 'Bearer D8298F2101BDBC2D2E91CE24D58792B5FA51CAD7A0F5A27B'
     }
-
+    for case in case_num: case = case.replace("（", "(").replace("）", ")")
     data = {
         "case_num": case_num
     }
 
     rsp = requests.post(url, json=data, headers=headers)
+    result = rsp.json()
     # 错误判断
-    if rsp.json() == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
-    if len(case_num) == 1:
-        return [rsp.json()]
+    if result == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
+    if type(result) == dict:
+        
+        if '涉案金额' in result and "元" in result['涉案金额']:
+            result['涉案金额'] = result['涉案金额'].replace("元", "")
+        results = []
+        results.append(result)
+        return results
     else:
-        return rsp.json()
-
+        for res in result:
+            if '涉案金额' in result and "元" in result['涉案金额']:
+                res['涉案金额'] = res['涉案金额'].replace("元", "")
+        return result
 
 def search_case_num_by_legal_document(
     key: str,
