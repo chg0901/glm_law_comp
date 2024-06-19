@@ -26,7 +26,7 @@ def get_company_info(
 
 def search_company_name_by_info(
     key: str,
-    value: list[str]) -> list[dict]:
+    value: str) -> list[dict]:
     '''根据公司基本信息某个字段是某个值来查询具体的公司名称
         Args:
         key(str):公司基本信息字段
@@ -45,12 +45,16 @@ def search_company_name_by_info(
     }
 
     rsp = requests.post(url, json=data, headers=headers)
+    result = rsp.json()
     # 错误判断
-    if rsp.json() == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
-    if len(rsp.json()) == 1:
-        return [rsp.json()]
+    if result == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
+    if len(result) == 1:
+        return [result['公司名称']]
     else: 
-        return rsp.json()
+        results = []
+        for res in result:
+            results.append(res["公司名称"])
+        return results
 
 def get_company_register(
     company_name: list[str]) -> list[dict]:
@@ -168,11 +172,16 @@ def search_company_name_by_sub_info(
         'value': value
     }
     rsp = requests.post(url, json=data, headers=headers)
+    result = rsp.json()
     # 错误判断
-    if rsp.json() == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
-    result = []
-    for rsp in rsp.json(): result.append(rsp['公司名称'])
-    return result
+    if result == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
+    
+    if len(result) == 1:
+        return result['公司名称']
+    else:
+        results = []
+        for res in result: results.append(res['公司名称'])
+        return results
 
 def get_sub_company_info_by_company_info(
         key:str,
@@ -180,7 +189,6 @@ def get_sub_company_info_by_company_info(
 )->list[dict]:
     # 通过search_company_name_by_sub_info获得母公司名下所有子公司名称
     company_names = search_company_name_by_sub_info(key=key, value=value)
-    print(len(company_names))
     import time
     if len(company_names) > 127:
         i = 127
