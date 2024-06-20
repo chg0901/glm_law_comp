@@ -1,10 +1,19 @@
-## 1. GLM在简单问题（一个函数就能解决）大概率选择正确的函数但执行tool_call
+## 1. GLM在简单问题（一个函数就能解决）大概率选择正确的函数但执行tool_call 已解决
 ![](img/call.png)
-## 2. 返回的部分代码会不带或带一半代码框
+LocalCommandLineCodeExecutor 316行添加`if "print" not in code: logs_all += "代码中没有print函数，无法打印结果。\n请传入使用print打印结果的代码。"`
+## 2. 返回的部分代码会不带或带一半代码框（尚为测试）
 ![](img/代码框.png)
-上述两个问题都在prompt中做了强调但效果不好
-> 目前62.92answers已经上传到results，问题二可以在answers中看到
-## 3. get_sub_company_info函数bug
-目前已修复
+ConversableAgent 1450行
+修改前
+![](img/修改前.png)
+修改后
+![](img/修改后.png)
+## 3. get_sub_company_info函数bug 已解决
 ![](img/get_sub_company_info.png)
-
+## 4. 代码中不带from functions import 已解决
+LocalCommandLineCodeExecutor 283行 加了`f.write("from functions import *\n" + code)`
+## 5.未正常结束对话 待测试
+比如glmy应只回复TERMINATE，结果回复了print('TERMINATE')
+修改内容(注释为原来内容)
+![](img/修改前后.png)
+> 目前70分answers已经上传到results
