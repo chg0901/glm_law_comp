@@ -18,4 +18,4 @@ LocalCommandLineCodeExecutor 283行 加了`f.write("from functions import *\n" +
 ![](img/T_修改前.png)
 修改后
 ![](img/T_修改后.png)
-> 目前70分answers已经上传到results
+> 目前77分answers已经上传到results
