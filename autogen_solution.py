@@ -58,7 +58,7 @@ results = []
 for query in tqdm(queries):
     try:
         chat_result = code_executor_agent.initiate_chat(code_writer_agent, message=query['question'], max_turns=8)
-        results.append(chat_result.chat_history[-3]['content'])
+        results.append(chat_result.chat_history[-2]['content'])
     except Exception as e:
         results.append(query['question'])
 

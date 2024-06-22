@@ -231,7 +231,7 @@ def get_legal_document(
     if type(result) == dict:
         
         if '涉案金额' in result and "元" in result['涉案金额']:
-            result['涉案金额'] = result['涉案金额'].replace("元", "")
+            result['涉案金额'] = result['涉案金额'].replace("元", "").replace(" ", "")
         results = []
         results.append(result)
         return results
