@@ -194,13 +194,11 @@ def get_sub_company_info_by_company_info(
         i = 127
         company_name = []
         for i in range(127, len(company_names), 127):
-            time.sleep(3)
             company_name.extend(get_sub_company_info(company_name=company_names[i-127:i]))
-            
             if len(company_names) < i + 127:
                 time.sleep(3)
                 company_name.extend(get_sub_company_info(company_name=company_names[i:]))
-                
+
         return company_name
     # 通过get_sub_company_info获得所有子公司的信息
     else:
