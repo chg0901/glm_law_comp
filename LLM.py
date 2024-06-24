@@ -66,7 +66,8 @@ def write_execute(plan_id, query):
             search_company_name_by_sub_info,
             get_sub_company_info_by_company_info,
             get_legal_document,
-            search_case_num_by_legal_document]
+            search_case_num_by_legal_document,
+            get_max_law_office]
   )
     code_executor_agent = ConversableAgent(
         name="code_executor_agent",

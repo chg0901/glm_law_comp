@@ -261,4 +261,32 @@ def search_case_num_by_legal_document(
     rsp = requests.post(url, json=data, headers=headers)
     # 错误判断
     if rsp.json() == []: raise ValueError("您查询的数据不存在，请检查传入参数及使用的函数是否正确。")
-    return rsp.json()
+    if len(rsp.json()) == 1: 
+        return [rsp.json()]
+    else:
+        return rsp.json()
+
+def get_max_law_office(is_plaintiff:bool, company_name: str):
+    if is_plaintiff:
+        key = "原告"
+        law = "原告律师"
+    else:
+        key = "被告"
+        law = "被告律师"
+    legal_nums = search_case_num_by_legal_document(key=key, value=company_name)
+    legal_num = [i['案号'] for i in legal_nums]
+
+    legal_documents = get_legal_document(legal_num)
+    law_office = {}
+    for i in legal_documents:
+        for j in i[law].split(","):
+            if '律师事务所' in j and j in law_office:
+                law_office[j] += 1
+            elif '律师事务所' in j and j not in law_office:
+                law_office[j] = 1
+    # 获取最大值及其对应的键
+    if len(law_office) == 0:
+        return "该公司作为{}时没有合作的律所".format(key)
+    max_value = max(law_office.values())
+    max_key = [key for key, value in law_office.items() if value == max_value][0]
+    return "与{}合作最多的事务所为{}，共合作{}次。".format(company_name, max_key, max_value)
