@@ -18,7 +18,7 @@ for query in tqdm(queries):
             result = write_execute(plan_id=plan_id, query=query['question'])
         results.append(result)
     except Exception as e:
-        print(query["id"] + "回答失败")
+        print(str(query["id"]) + "回答失败")
         results.append("回答失败")
 
 save_answers(queries=queries, results=results)

@@ -1,6 +1,10 @@
-from autogen_tools import get_company_register
+import requests
+url = f"https://comm.chatglm.cn/law_api/s1_b/save_dict_list_to_word"
 
-# 使用get_company_register函数获取河南中敏传感器技术研究院有限公司注册信息
-company_register = get_company_register(company_name=["河南中敏传感器技术研究院有限公司"])
-# 打印结果
-print("河南中敏传感器技术研究院有限公司的组织机构代码为：" + company_register[0]["组织机构代码"])
+headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer D8298F2101BDBC2D2E91CE24D58792B5FA51CAD7A0F5A27B'
+}
+data = {"company_name": company_name, "dict_list": dict_list}
+rsp = requests.post(url, json=data, headers=headers)
+open('1.docx', "wb").write(rsp.content)
