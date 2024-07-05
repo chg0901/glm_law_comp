@@ -1,7 +1,7 @@
 ## 1. GLM在简单问题（一个函数就能解决）大概率选择正确的函数但执行tool_call 已解决
 ![](img/call.png)
 LocalCommandLineCodeExecutor 316行添加`if "print" not in code: logs_all += "代码中没有print函数，无法打印结果。\n请传入使用print打印结果的代码。"`
-## 2. 返回的部分代码会不带或带一半代码框（尚为测试）
+## 2. 返回的部分代码会不带或带一半代码框（尚未测试）
 ![](img/代码框.png)
 ConversableAgent 1450行
 修改前
