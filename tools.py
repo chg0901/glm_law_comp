@@ -322,62 +322,232 @@ def save_dict_list_to_word(company_name: str, dict_list: str, save_path: str):
     rsp = requests.post(url, json=data, headers=headers)
     open(save_path, "wb").write(rsp.content)
 
-'''
-def get_citizens_sue_citizens(abc: str):
-    公民起诉公民
+
+def get_citizens_sue_citizens(
+        原告: str,
+        原告性别: str,
+        原告生日: str,
+        原告民族: str,
+        原告工作单位: str,
+        原告地址: str,
+        原告联系方式: str,
+        原告委托诉讼代理人: str,
+        原告委托诉讼代理人联系方式: str,
+        被告: str,
+        被告性别: str,
+        被告生日: str,
+        被告民族: str,
+        被告工作单位: str,
+        被告地址: str,
+        被告联系方式: str,
+        被告委托诉讼代理人: str,
+        被告委托诉讼代理人联系方式: str,
+        诉讼请求: str,
+        事实和理由: str,
+        证据: str,
+        法院名称: str,
+        起诉日期: str,
+        ):
+    '''公民起诉公民'''
+
     import requests
-    import json
     url = f"https://comm.chatglm.cn/law_api/s1_b/get_citizens_sue_citizens"
 
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer D8298F2101BDBC2D2E91CE24D58792B5FA51CAD7A0F5A27B'
     }
-    data = json.loads(abc)
+    data = {
+        '原告': 原告,
+        '原告性别': 原告性别,
+        '原告生日': 原告生日,
+        '原告民族': 原告民族,
+        '原告工作单位': 原告工作单位,
+        '原告地址': 原告地址,
+        '原告联系方式': 原告联系方式,
+        '原告委托诉讼代理人': 原告委托诉讼代理人,
+        '原告委托诉讼代理人联系方式': 原告委托诉讼代理人联系方式,
+        '被告': 被告,
+        '被告性别': 被告性别,
+        '被告生日': 被告生日,
+        '被告民族': 被告民族,
+        '被告工作单位': 被告工作单位,
+        '被告地址': 被告地址,
+        '被告联系方式': 被告联系方式,
+        '被告委托诉讼代理人': 被告委托诉讼代理人,
+        '被告委托诉讼代理人联系方式': 被告委托诉讼代理人联系方式,
+        '诉讼请求': 诉讼请求,
+        '事实和理由': 事实和理由,
+        '证据': 证据,
+        '法院名称': 法院名称,
+        '起诉日期': 起诉日期}
     rsp = requests.post(url, json=data, headers=headers)
     return rsp.json()
-    
-'''
 
-def get_company_sue_citizens(abc: str):
+# print(get_citizens_sue_citizens(原告='张三', 原告性别='男', 原告生日='1976-10-2', 原告民族='汉', 原告工作单位='XXX', 原告地址='中国', 原告联系方式='123456', 原告委托诉讼代理人='李四', 原告委托诉讼代理人联系方式='421313', 被告='王五', 被告性别='女', 被告生日='1975-02-12', 被告民族='汉', 被告工作单位='YYY', 被告地址='江苏', 被告联系方式='56354321', 被告委托诉讼代理人='赵六', 被告委托诉讼代理人联系方式='09765213', 诉讼请求='AA纠纷', 事实和理由='上诉', 证据='PPPPP', 法院名称='最高法', 起诉日期='2012-09-08'))
+
+def get_company_sue_citizens(
+        原告: str,
+        原告地址: str,
+        原告法定代表人: str,
+        原告联系方式: str,
+        原告委托诉讼代理人: str,
+        原告委托诉讼代理人联系方式: str,
+        被告: str,
+        被告性别: str,
+        被告生日: str,
+        被告民族: str,
+        被告工作单位: str,
+        被告地址: str,
+        被告联系方式: str,
+        被告委托诉讼代理人: str,
+        被告委托诉讼代理人联系方式: str,
+        诉讼请求: str,
+        事实和理由: str,
+        证据: str,
+        法院名称: str,
+        起诉日期: str,
+):
     '''公司起诉公民'''
     import requests
-    import json
+
     url = f"https://comm.chatglm.cn/law_api/s1_b/get_company_sue_citizens"
 
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer D8298F2101BDBC2D2E91CE24D58792B5FA51CAD7A0F5A27B'
     }
-    data = json.loads(abc)
+    data = {
+        '原告': 原告,
+        '原告地址': 原告地址,
+        '原告法定代表人': 原告法定代表人,
+        '原告联系方式': 原告联系方式,
+        '原告委托诉讼代理人': 原告委托诉讼代理人,
+        '原告委托诉讼代理人联系方式': 原告委托诉讼代理人联系方式,
+        '被告': 被告,
+        '被告性别': 被告性别,
+        '被告生日': 被告生日,
+        '被告民族': 被告民族,
+        '被告工作单位': 被告工作单位,
+        '被告地址': 被告地址,
+        '被告联系方式': 被告联系方式,
+        '被告委托诉讼代理人': 被告委托诉讼代理人,
+        '被告委托诉讼代理人联系方式': 被告委托诉讼代理人联系方式,
+        '诉讼请求': 诉讼请求,
+        '事实和理由': 事实和理由,
+        '证据': 证据,
+        '法院名称': 法院名称,
+        '起诉日期': 起诉日期,
+    }
     rsp = requests.post(url, json=data, headers=headers)
     return rsp.json()
 
-def get_citizens_sue_company(abc: str):
+# print(get_company_sue_citizens(原告= '上海公司', 原告地址= '上海', 原告法定代表人= '张三', 原告联系方式= '872638', 原告委托诉讼代理人= 'B律师事务所', 原告委托诉讼代理人联系方式= '5678900', 被告= '王五', 被告性别= '女', 被告生日= '1975-02-12', 被告民族= '汉', 被告工作单位= 'YYY', 被告地址= '江苏', 被告联系方式= '56354321', 被告委托诉讼代理人= '赵六', 被告委托诉讼代理人联系方式= '09765213', 诉讼请求= 'AA纠纷', 事实和理由= '上诉', 证据= 'PPPPP', 法院名称= '最高法', 起诉日期= '2012-09-08'))
+
+def get_citizens_sue_company(
+        原告: str,
+        原告性别: str,
+        原告生日: str,
+        原告民族: str,
+        原告工作单位: str,
+        原告地址: str,
+        原告联系方式: str,
+        原告委托诉讼代理人: str,
+        原告委托诉讼代理人联系方式: str,
+        被告: str,
+        被告地址: str,
+        被告法定代表人: str,
+        被告联系方式: str,
+        被告委托诉讼代理人: str,
+        被告委托诉讼代理人联系方式: str,
+        诉讼请求: str,
+        事实和理由: str,
+        证据: str,
+        法院名称: str,
+        起诉日期: str,
+):
     '''公民起诉公司'''
     import requests
-    import json
     url = f"https://comm.chatglm.cn/law_api/s1_b/get_citizens_sue_company"
 
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer D8298F2101BDBC2D2E91CE24D58792B5FA51CAD7A0F5A27B'
     }
-    data = json.loads(abc)
+    data = {
+        '原告': 原告,
+        '原告性别': 原告性别,
+        '原告生日': 原告生日,
+        '原告民族': 原告民族,
+        '原告工作单位': 原告工作单位,
+        '原告地址': 原告地址,
+        '原告联系方式': 原告联系方式,
+        '原告委托诉讼代理人': 原告委托诉讼代理人,
+        '原告委托诉讼代理人联系方式': 原告委托诉讼代理人联系方式,
+        '被告': 被告,
+        '被告地址': 被告地址,
+        '被告法定代表人': 被告法定代表人,
+        '被告联系方式': 被告联系方式,
+        '被告委托诉讼代理人': 被告委托诉讼代理人,
+        '被告委托诉讼代理人联系方式': 被告委托诉讼代理人联系方式,
+        '诉讼请求': 诉讼请求,
+        '事实和理由': 事实和理由,
+        '证据': 证据,
+        '法院名称': 法院名称,
+        '起诉日期': 起诉日期,
+    }
     rsp = requests.post(url, json=data, headers=headers)
     return rsp.json()
+# print(get_citizens_sue_company(原告='张三', 原告性别='男', 原告生日='1976-10-2', 原告民族='汉', 原告工作单位='XXX', 原告地址='中国', 原告联系方式='123456', 原告委托诉讼代理人='李四', 原告委托诉讼代理人联系方式='421313', 被告='王五公司', 被告地址='公司地址', 被告法定代表人='赵四', 被告联系方式='98766543', 被告委托诉讼代理人='C律师事务所', 被告委托诉讼代理人联系方式='425673398', 诉讼请求='AA纠纷', 事实和理由='上诉', 证据='PPPPP', 法院名称='最高法', 起诉日期='2012-09-08'))
 
-def get_company_sue_company(abc: str):
+def get_company_sue_company(
+        原告: str,
+        原告地址: str,
+        原告法定代表人: str,
+        原告联系方式: str,
+        原告委托诉讼代理人: str,
+        原告委托诉讼代理人联系方式: str,
+        被告: str,
+        被告地址: str,
+        被告法定代表人: str,
+        被告联系方式: str,
+        被告委托诉讼代理人: str,
+        被告委托诉讼代理人联系方式: str,
+        诉讼请求: str,
+        事实和理由: str,
+        证据: str,
+        法院名称: str,
+        起诉日期: str,
+):
     '''公司起诉公司'''
     import requests
-    import json
+
     url = f"https://comm.chatglm.cn/law_api/s1_b/get_company_sue_company"
 
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer D8298F2101BDBC2D2E91CE24D58792B5FA51CAD7A0F5A27B'
     }
-    data = json.loads(abc)
+    data = {
+        '原告': 原告,
+        '原告地址': 原告地址,
+        '原告法定代表人': 原告法定代表人,
+        '原告联系方式': 原告联系方式,
+        '原告委托诉讼代理人': 原告委托诉讼代理人,
+        '原告委托诉讼代理人联系方式': 原告委托诉讼代理人联系方式,
+        '被告': 被告,
+        '被告地址': 被告地址,
+        '被告法定代表人': 被告法定代表人,
+        '被告联系方式': 被告联系方式,
+        '被告委托诉讼代理人': 被告委托诉讼代理人,
+        '被告委托诉讼代理人联系方式': 被告委托诉讼代理人联系方式,
+        '诉讼请求': 诉讼请求,
+        '事实和理由': 事实和理由,
+        '证据': 证据,
+        '法院名称': 法院名称,
+        '起诉日期': 起诉日期,
+    }
     rsp = requests.post(url, json=data, headers=headers)
     return rsp.json()
 
+# print(get_company_sue_company(原告='上海公司', 原告地址='上海', 原告法定代表人='张三', 原告联系方式='872638', 原告委托诉讼代理人='B律师事务所', 原告委托诉讼代理人联系方式='5678900', 被告='王五公司', 被告地址='公司地址', 被告法定代表人='赵四', 被告联系方式='98766543', 被告委托诉讼代理人='C律师事务所', 被告委托诉讼代理人联系方式='425673398', 诉讼请求='AA纠纷', 事实和理由='上诉', 证据='PPPPP', 法院名称='最高法', 起诉日期='2012-09-08'))

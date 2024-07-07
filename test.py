@@ -1,10 +1,16 @@
-import requests
-url = f"https://comm.chatglm.cn/law_api/s1_b/save_dict_list_to_word"
+def get_company_sue_citizens():
+    '''公司起诉公民'''
+    import requests
+    url = f"https://comm.chatglm.cn/law_api/s1_b/get_company_sue_citizens"
 
-headers = {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer D8298F2101BDBC2D2E91CE24D58792B5FA51CAD7A0F5A27B'
-}
-data = {"company_name": company_name, "dict_list": dict_list}
-rsp = requests.post(url, json=data, headers=headers)
-open('1.docx', "wb").write(rsp.content)
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer D8298F2101BDBC2D2E91CE24D58792B5FA51CAD7A0F5A27B'
+    }
+    data ={ '原告': '上海公司', '原告地址': '上海', '原告法定代表人': '张三', '原告联系方式': '872638', '原告委托诉讼代理人': 'B律师事务所', '原告委托诉讼代理人联系方式': '5678900', '被告': '王五', '被告性别': '女', '被告生日': '1975-02-12', '被告民族': '汉', '被告工作单位': 'YYY', '被告地址': '江苏', '被告联系方式': '56354321', '被告委托诉讼代理人': '赵六', '被告委托诉讼代理人联系方式': '09765213', '诉讼请求': 'AA纠纷', '事实和理由': '上诉', '证据': 'PPPPP', '法院名称': '最高法', '起诉日期': '2012-09-08' }
+    rsp = requests.post(url, json=data, headers=headers)
+    return rsp.json()
+# print(get_company_sue_citizens())
+
+abc = "{ '原告': '上海公司', '原告地址': '上海', '原告法定代表人': '张三', '原告联系方式': '872638', '原告委托诉讼代理人': 'B律师事务所', '原告委托诉讼代理人联系方式': '5678900', '被告': '王五公司', '被告地址': '公司地址', '被告法定代表人': '赵四', '被告联系方式': '98766543', '被告委托诉讼代理人': 'C律师事务所', '被告委托诉讼代理人联系方式': '425673398', '诉讼请求': 'AA纠纷', '事实和理由': '上诉', '证据': 'PPPPP', '法院名称': '最高法', '起诉日期': '2012-09-08' }"
+print(abc.replace('\'', '').replace(':', '='))

@@ -1,7 +1,7 @@
 # Workflow
 ![](img/b_list.png)
 # ToDo
-1. 完善tools函数
+1. 完善tools函数 ✅
 
 2. 设计选表prompt及获取选表结果function（修改TABLE_PROMPT即可）
 ![](img/classify.png)
