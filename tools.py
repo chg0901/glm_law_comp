@@ -1,5 +1,4 @@
-from typing import Optional
-def get_company_info(key: str, value:str, need_fields: Optional[str] = None):
+def get_company_info(key: str, value:str, need_fields: list[str] = None):
     '''
     key: str  可以为 公司名称、公司简称、公司代码
     value: str
@@ -20,7 +19,7 @@ def get_company_info(key: str, value:str, need_fields: Optional[str] = None):
 
 # print(get_company_info(key="公司名称", value="上海妙可蓝多食品科技股份有限公司", need_fields=["公司简称", "注册地址"]))
 
-def get_company_register(company_name: str, need_fields: Optional[str] = None):
+def get_company_register(company_name: str, need_fields: list[str] = None):
     '''
     company_name: str
     need_fields:list[str] [公司名称,登记状态,统一社会信用代码,法定代表人,注册资本,成立日期,企业地址,联系电话,联系邮箱,注册号,组织机构代码,参保人数,行业一级,行业二级,行业三级,曾用名,企业简介,经营范围]
@@ -59,7 +58,7 @@ def get_company_register_name(social_code: str):
 
 # print(get_company_register_name(social_code="913305007490121183"))
 
-def get_sub_company_info(sub_company_name: str, need_fields: Optional[str] = None):
+def get_sub_company_info(sub_company_name: str, need_fields: list[str] = None):
     '''
     company_name: str
     need_fields:list[str] [关联上市公司全称,上市公司关系,上市公司参股比例,上市公司投资金额,公司名称]
@@ -79,7 +78,7 @@ def get_sub_company_info(sub_company_name: str, need_fields: Optional[str] = Non
 
 # print(get_sub_company_info(sub_company_name="上海爱斯达克汽车空调系统有限公司", need_fields=["关联上市公司全称", "上市公司参股比例"]))
 
-def get_sub_company_info_list(parent_company_name: str, need_fields: Optional[str] = None):
+def get_sub_company_info_list(parent_company_name: str, need_fields: list[str] = None):
     '''
     parent_company_name: str
     need_fields:list[str] [关联上市公司全称,上市公司关系,上市公司参股比例,上市公司投资金额,公司名称]
@@ -97,7 +96,7 @@ def get_sub_company_info_list(parent_company_name: str, need_fields: Optional[st
     rsp = requests.post(url, json=data, headers=headers)
     return rsp.json()
 # print(get_sub_company_info_list(parent_company_name="上海航天汽车机电股份有限公司", need_fields=["上市公司投资金额"]))
-def get_legal_document(legal_num: str, need_fields: Optional[str] = None):
+def get_legal_document(legal_num: str, need_fields: list[str] = None):
     '''
     parent_company_name: str
     need_fields:list[str] [关联公司,标题,案号,文书类型,原告,被告,原告律师事务所,被告律师事务所,案由,涉案金额,判决结果,日期,文件名]
@@ -115,9 +114,9 @@ def get_legal_document(legal_num: str, need_fields: Optional[str] = None):
     rsp = requests.post(url, json=data, headers=headers)
     return rsp.json()
 
-# print(get_legal_document(legal_num="(2019)沪0115民初61975号", need_fields=["关联公司", "标题"]))
+# print(get_legal_document(legal_num="(2019)沪0115民初61975号", need_fields=["关联公司", "标题", "案由"]))
 
-def get_legal_document_list(affiliated_company_name: str, need_fields: Optional[str] = None):
+def get_legal_document_list(affiliated_company_name: str, need_fields: list[str] = None):
     '''
     company_name: str
     need_fields:list[str] [关联公司,标题,案号,文书类型,原告,被告,原告律师事务所,被告律师事务所,案由,涉案金额,判决结果,日期,文件名]
@@ -136,7 +135,7 @@ def get_legal_document_list(affiliated_company_name: str, need_fields: Optional[
     return rsp.json()
 
 # print(get_legal_document_list(affiliated_company_name="上海爱斯达克汽车空调系统有限公司", need_fields=["标题", "案号"]))
-def get_legal_abstract(legal_num: str, need_fields: Optional[str] = None):
+def get_legal_abstract(legal_num: str, need_fields: list[str] = None):
     '''
     parent_company_name: str
     need_fields:list[str] [文件名,案号,文本摘要]
@@ -155,7 +154,7 @@ def get_legal_abstract(legal_num: str, need_fields: Optional[str] = None):
     return rsp.json()
 
 # print(get_legal_abstract(legal_num="（2019）沪0115民初61975号", need_fields=["文件名", "案号"]))
-def get_xzgxf_info(legal_num: str, need_fields: Optional[str] = None):
+def get_xzgxf_info(legal_num: str, need_fields: list[str] = None):
     '''
     parent_company_name: str
     need_fields:list[str] [限制高消费企业名称,案号,法定代表人,申请人,涉案金额,执行法院,立案日期,限高发布日期]
@@ -173,7 +172,7 @@ def get_xzgxf_info(legal_num: str, need_fields: Optional[str] = None):
     rsp = requests.post(url, json=data, headers=headers)
     return rsp.json()
 # print(get_xzgxf_info(legal_num="（2018）鲁0403执1281号", need_fields=["限制高消费企业名称", "执行法院"]))
-def get_xzgxf_info_list(company_name: str, need_fields: Optional[str] = None):
+def get_xzgxf_info_list(company_name: str, need_fields: list[str] = None):
     '''
     parent_company_name: str
     need_fields:list[str] [限制高消费企业名称,案号,法定代表人,申请人,涉案金额,执行法院,立案日期,限高发布日期]
@@ -192,7 +191,7 @@ def get_xzgxf_info_list(company_name: str, need_fields: Optional[str] = None):
     return rsp.json()
 
 # print(get_xzgxf_info_list(company_name="欣水源生态环境科技有限公司", need_fields=["限制高消费企业名称", "执行法院"]))
-def get_court_info(court_name: str, need_fields: Optional[str] = None):
+def get_court_info(court_name: str, need_fields: list[str] = None):
     '''
     company_name: str
     need_fields:list[str] [法院名称,法院负责人,成立日期,法院地址,法院联系电话,法院官网]
@@ -211,7 +210,7 @@ def get_court_info(court_name: str, need_fields: Optional[str] = None):
     return rsp.json()
 
 # print(get_court_info(court_name="上海市浦东新区人民法院", need_fields=["法院名称", "法院地址"]))
-def get_court_code(key: str, value: str, need_fields: Optional[str] = None):
+def get_court_code(key: str, value: str, need_fields: list[str] = None):
     '''
     key: str 法院名称、法院代字
     value: str
@@ -230,7 +229,7 @@ def get_court_code(key: str, value: str, need_fields: Optional[str] = None):
     return rsp.json()
 
 # print(get_court_code(key="法院名称", value="上海市浦东新区人民法院", need_fields=["法院名称", "法院级别"]))
-def get_lawfirm_info(lawfirm_name: str, need_fields: Optional[str] = None):
+def get_lawfirm_info(lawfirm_name: str, need_fields: list[str] = None):
     '''
     lawfirm_name: str
     need_fields:list[str] [律师事务所名称,律师事务所唯一编码,律师事务所负责人,事务所注册资本,事务所成立日期,律师事务所地址,通讯电话,通讯邮箱,律所登记机关]
@@ -248,7 +247,7 @@ def get_lawfirm_info(lawfirm_name: str, need_fields: Optional[str] = None):
     return rsp.json()
 
 # print(get_lawfirm_info(lawfirm_name="爱德律师事务所", need_fields=["律师事务所名称", "事务所注册资本"]))
-def get_lawfirm_log(lawfirm_name: str, need_fields: Optional[str] = None):
+def get_lawfirm_log(lawfirm_name: str, need_fields: list[str] = None):
     '''
     lawfirm_name: str
     need_fields:list[str] [律师事务所名称,业务量排名,服务已上市公司,报告期间所服务上市公司违规事件,报告期所服务上市公司接受立案调查]
@@ -267,7 +266,7 @@ def get_lawfirm_log(lawfirm_name: str, need_fields: Optional[str] = None):
 
 # print(get_lawfirm_log(lawfirm_name="北京市金杜律师事务所", need_fields=["律师事务所名称", "业务量排名"]))
 
-def get_address_info(address: str, need_fields: Optional[str] = None):
+def get_address_info(address: str, need_fields: list[str] = None):
     '''
     address: str
     need_fields:list[str] [地址,省份,城市,区县]
@@ -285,7 +284,7 @@ def get_address_info(address: str, need_fields: Optional[str] = None):
     return rsp.json()
 
 # print(get_address_info("西藏自治区那曲地区安多县帕那镇中路13号", need_fields=["省份", "区县"]))
-def get_address_code(province: str, city: str, district: str, need_fields: Optional[str] = None):
+def get_address_code(province: str, city: str, district: str, need_fields: list[str] = None):
     '''
     address: str
     need_fields:list[str] [省份,城市,城市区划代码,区县,区县区划代码]
@@ -303,7 +302,7 @@ def get_address_code(province: str, city: str, district: str, need_fields: Optio
     return rsp.json()
 
 # print(get_address_code(province="西藏自治区", city="拉萨市", district="城关区", need_fields=["城市区划代码", "区县区划代码"]))
-def get_temp_info(province: str, city: str, date: str, need_fields: Optional[str] = None):
+def get_temp_info(province: str, city: str, date: str, need_fields: list[str] = None):
     '''
     address: str
     need_fields:list[str] [日期,省份,城市,天气,最高温度,最低温度,湿度]
