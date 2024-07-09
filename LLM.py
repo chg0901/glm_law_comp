@@ -3,7 +3,7 @@ import json
 import re
 from utils import get_zhipu_api_key
 from autogen.coding import LocalCommandLineCodeExecutor
-from autogen_tools import *
+from tools import *
 from autogen import ConversableAgent, AssistantAgent
 from prompt import *
 def LLM(query):
@@ -43,7 +43,7 @@ def refine_answer(question, answer):
   final_answer = LLM(query=prompt)
   return final_answer
 
-def write_execute(plan_id, query):
+def write_execute(prompt, question):
     ZHIPU_API_KEY = get_zhipu_api_key()
     llm_config = {
         "config_list": [
@@ -57,17 +57,32 @@ def write_execute(plan_id, query):
     executor = LocalCommandLineCodeExecutor(
       timeout=60,
       work_dir="coding",
-      functions=[get_company_info,
-            search_company_name_by_info,
-            get_company_register,
-            search_company_name_by_register,
-            ch2int,
-            get_sub_company_info,
-            search_company_name_by_sub_info,
-            get_sub_company_info_by_company_info,
-            get_legal_document,
-            search_case_num_by_legal_document,
-            get_max_law_office]
+      functions=[
+         get_company_info,
+         get_company_register,
+         get_company_register_name,
+         get_sub_company_info,
+         get_sub_company_info_list,
+         get_legal_document,
+         get_legal_document_list,
+         get_legal_abstract,
+         get_xzgxf_info,
+         get_xzgxf_info_list,
+         get_court_info,
+         get_court_code,
+         get_lawfirm_info,
+         get_lawfirm_log,
+         get_address_info,
+         get_address_code,
+         get_temp_info,
+         save_dict_list_to_word,
+         get_citizens_sue_citizens,
+         get_company_sue_citizens,
+         get_citizens_sue_company,
+         get_company_sue_company,
+         get_sum,
+         get_rank
+      ]
   )
     code_executor_agent = ConversableAgent(
         name="code_executor_agent",
@@ -77,19 +92,18 @@ def write_execute(plan_id, query):
         default_auto_reply=
         "请继续 如果所有的事情都已经做完，请只返回'TERMINATE'。",
     )
-    prompt_list = [WRITER_PROMPT_1, WRITER_PROMPT_2, WRITER_PROMPT_3]
     code_writer_agent = AssistantAgent(
         name="code_writer_agent",
-        system_message=prompt_list[plan_id - 1],
+        system_message=prompt,
         llm_config=llm_config,
         code_execution_config=False,
         human_input_mode="NEVER",
     )
     chat_result = code_executor_agent.initiate_chat(
         code_writer_agent,
-        message=query,
+        message=question,
         max_turns=8
     )
     code_result = chat_result.chat_history[-2]['content']
-    answer = refine_answer(question=query, answer=code_result)
+    answer = refine_answer(question=question, answer=code_result)
     return answer
