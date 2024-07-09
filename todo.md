@@ -1,20 +1,21 @@
-# Workflow
-![](img/b_list.png)
-# ToDo
-1. 完善tools函数 ✅
-
-2. 设计选表prompt及获取选表结果function（修改TABLE_PROMPT即可）✅
-![](img/classify.png)
-
-3. 设计总体prompt与函数prompt，以便prompt组合（例：总+法院表+地址表+天气表）✅
-![](img/example.png)
-
-4. 测试收集badcase并完善方案 进行中...
-* 在民事起诉状类问题直接调用民事起诉状函数，但此时缺少其他信息(而且存在完善/更改函数输出现象)
-![](img/民事起诉状.png)
-* 有小部分问题回答失败，应该是分类时json解析问题
-![](img/回答失败.png)
-* 分次回答（结果不在同一个代码块），没有总结答案
-![](img/分次回答.png)
-* 拿简称当全称。。。
-![](img/简称.png)
+## 1. GLM在简单问题（一个函数就能解决）大概率选择正确的函数但执行tool_call 已解决
+![](img/call.png)
+LocalCommandLineCodeExecutor 316行添加`if "print" not in code: logs_all += "代码中没有print函数，无法打印结果。\n请传入使用print打印结果的代码。"`
+## 2. 返回的部分代码会不带或带一半代码框（尚未测试）
+![](img/代码框.png)
+ConversableAgent 1450行
+修改前
+![](img/修改前.png)
+修改后
+![](img/修改后.png)
+## 3. get_sub_company_info函数bug 已解决
+![](img/get_sub_company_info.png)
+## 4. 代码中不带from functions import 已解决
+LocalCommandLineCodeExecutor 283行 加了`f.write("from functions import *\n" + code)`
+## 5.未正常结束对话 待测试
+比如glm应只回复TERMINATE，结果回复了print('TERMINATE')
+修改前
+![](img/T_修改前.png)
+修改后
+![](img/T_修改后.png)
+> 目前77分answers已经上传到results
