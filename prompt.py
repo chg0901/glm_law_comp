@@ -120,8 +120,19 @@ WRITER_PROMPT = """
 3.  请你把代码放在```python```代码框中，方便我执行你的代码，把代码的运行结果用print方法打印出来。
 4.  如果我执行的结果是正确的，请结合结果与问题返回相应的答案。
 
-# 你可以使用的函数 #
 """
+
+SIMILAR_RELASIONSHIP_PROMPT = """
+# 关系映射 #
+
+回答时，请注意以下文字关系映射，每行的第一个词和第二个词含义相同，并注意问题中叠字与错别字
+1. 被起诉人，被告
+2. 起诉人，原告
+
+# 你可以使用的函数 #
+
+"""
+
 
 WRITER_PROMPT_0 = """
 get_company_info(key: str, value:str, need_fields: Optional[str] = None)
