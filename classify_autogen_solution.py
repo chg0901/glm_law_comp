@@ -57,7 +57,10 @@ for question in tqdm(queries):
         rsp = LLM(TABLE_PROMPT.format(question=question["question"]))
         fcts = prase_json_from_response(rsp=rsp)
         plan_id = [table_plan_map[fct] for fct in fcts]
+        
         prompt = WRITER_PROMPT
+        prompt += SIMILAR_RELASIONSHIP_PROMPT
+        
         for id in plan_id: prompt += prompt_list[id]
         rsp = LLM(UTILS_PROMPT.format(question=question))
         fcts = prase_json_from_response(rsp=rsp)
