@@ -179,6 +179,7 @@ need_fields可以选择的字段有[关联公司,标题,案号,文书类型,原�
 
 get_legal_document_list(company_name: str, need_fields: Optional[str] = None)
 根据关联公司查询所有裁判文书相关信息list
+被起诉人即为被告
 need_fields可以选择的字段有[关联公司,标题,案号,文书类型,原告,被告,原告律师事务所,被告律师事务所,案由,涉案金额,判决结果,日期,文件名]
 例如：
     运行：print(get_legal_document_list(affiliated_company_name="上海爱斯达克汽车空调系统有限公司", need_fields=["标题", "案号"]))

@@ -63,7 +63,7 @@ for question in tqdm(queries):
         fcts = prase_json_from_response(rsp=rsp)
         plan_id = [utils_plan_map[fct] for fct in fcts]
         for id in plan_id: prompt += utils_prompt[id]
-        result = write_execute(prompt=prompt, question=question)
+        result = write_execute(prompt=prompt, question=question["question"])
         results.append(result)
 
     except Exception as e:
