@@ -18,3 +18,8 @@
 ![](img/分次回答.png)
 * 拿简称当全称。。。
 ![](img/简称.png)
+autogen修改记录
+1. ConversableAgent第147行
+![](img/1.png)
+2. LocalCommandLineCodeExecutor第283行
+![](img/2.png)
