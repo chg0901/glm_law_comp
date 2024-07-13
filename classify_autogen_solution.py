@@ -53,9 +53,14 @@ utils_prompt = [
     COMPANY_SUE_COMPANY,
 ]
 for question in tqdm(queries):
-    try:
-        rsp = LLM(TABLE_PROMPT.format(question=question["question"]))
-        fcts = prase_json_from_response(rsp=rsp)
+        while True:
+            rsp = LLM(TABLE_PROMPT.format(question=question["question"]))
+            try:
+                fcts = prase_json_from_response(rsp=rsp)
+                break  # 解析成功，退出循环
+            except Exception as e:
+                print(f"解析失败，重新获取响应。错误信息: {e}")
+                continue  # 解析失败，重新获取响应
         plan_id = [table_plan_map[fct] for fct in fcts]
         
         prompt = WRITER_PROMPT
@@ -69,8 +74,5 @@ for question in tqdm(queries):
         result = write_execute(prompt=prompt, question=question["question"])
         results.append(result)
 
-    except Exception as e:
-        print(str(question["id"]) + "回答失败")
-        results.append("回答失败")
 
 save_answers(queries=queries, results=results)

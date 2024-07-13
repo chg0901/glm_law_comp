@@ -105,5 +105,5 @@ def write_execute(prompt, question):
         max_turns=8
     )
     code_result = chat_result.chat_history[-2]['content']
-    answer = refine_answer(question=question, answer=code_result)
+    answer = refine_answer(question=question, answer=code_result).replace(", ", "")
     return answer
