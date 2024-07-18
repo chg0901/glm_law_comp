@@ -53,6 +53,7 @@ utils_prompt = [
     COMPANY_SUE_COMPANY,
 ]
 for question in tqdm(queries):
+    try:
         while True:
             rsp = LLM(TABLE_PROMPT.format(question=question["question"]))
             try:
@@ -67,12 +68,20 @@ for question in tqdm(queries):
         prompt += SIMILAR_RELASIONSHIP_PROMPT
         
         for id in plan_id: prompt += prompt_list[id]
-        rsp = LLM(UTILS_PROMPT.format(question=question))
-        fcts = prase_json_from_response(rsp=rsp)
+        while True:
+            rsp = LLM(UTILS_PROMPT.format(question=question))
+            try:
+                fcts = prase_json_from_response(rsp=rsp)
+                break
+            except Exception as e:
+                print(f"解析失败，重新获取响应。错误信息: {e}")
+                continue  # 解析失败，重新获取响应
         plan_id = [utils_plan_map[fct] for fct in fcts]
         for id in plan_id: prompt += utils_prompt[id]
         result = write_execute(prompt=prompt, question=question["question"])
         results.append(result)
+    except Exception as e:
+        results.append(question["question"])
 
 
 save_answers(queries=queries, results=results)
